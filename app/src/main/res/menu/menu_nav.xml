@@ -1,0 +1,25 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.expensetracker2020.MainActivity">
+
+    <item
+        android:id="@id/TransactionFragment"
+        android:icon="@drawable/ic_add_black"
+        android:title="@string/menu_add_transaction" />
+
+    <item
+        android:id="@id/CalendarFragment"
+        android:icon="@drawable/ic_calendar_black"
+        android:title="@string/menu_calendar" />
+
+    <item
+        android:id="@id/TagFragment"
+        android:icon="@drawable/ic_tags"
+        android:title="@string/menu_manage_tags" />
+
+    <item
+        android:id="@id/StatisticsFragment"
+        android:icon="@drawable/ic_tag_statistics_black"
+        android:title="@string/menu_tag_statistics" />
+</menu>

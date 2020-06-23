@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/HomeFragment">
+
+    <fragment
+        android:id="@+id/HomeFragment"
+        android:name="com.example.expensetracker2020.HomeFragment"
+        android:label="@string/top_home_label"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_HomeFragment_to_TransactionFragment"
+            app:destination="@id/TransactionFragment" />
+        <argument
+            android:name="transaction_success"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/TransactionFragment"
+        android:name="com.example.expensetracker2020.TransactionFragment"
+        android:label="@string/top_transaction_label"
+        tools:layout="@layout/fragment_transaction">
+        <action
+            android:id="@+id/action_TransactionFragment_to_HomeFragment"
+            app:destination="@id/HomeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/CalendarFragment"
+        android:name="com.example.expensetracker2020.CalendarFragment"
+        android:label="@string/top_calendar_label"
+        tools:layout="@layout/fragment_calendar" />
+    <fragment
+        android:id="@+id/TagFragment"
+        android:name="com.example.expensetracker2020.TagFragment"
+        android:label="@string/top_tag_label"
+        tools:layout="@layout/fragment_tag" />
+    <fragment
+        android:id="@+id/StatisticsFragment"
+        android:name="com.example.expensetracker2020.StatisticsFragment"
+        android:label="@string/top_statistics_label"
+        tools:layout="@layout/fragment_statistics" />
+</navigation>
