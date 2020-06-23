@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/HomeFragment"
-        android:name="com.example.expensetracker2020.HomeFragment"
+        android:name="com.example.expensetracker2020.Fragments.HomeFragment"
         android:label="@string/top_home_label"
         tools:layout="@layout/fragment_home">
         <action
@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/TransactionFragment"
-        android:name="com.example.expensetracker2020.TransactionFragment"
+        android:name="com.example.expensetracker2020.Fragments.TransactionFragment"
         android:label="@string/top_transaction_label"
         tools:layout="@layout/fragment_transaction">
         <action
@@ -29,17 +29,17 @@
     </fragment>
     <fragment
         android:id="@+id/CalendarFragment"
-        android:name="com.example.expensetracker2020.CalendarFragment"
+        android:name="com.example.expensetracker2020.Fragments.CalendarFragment"
         android:label="@string/top_calendar_label"
         tools:layout="@layout/fragment_calendar" />
     <fragment
         android:id="@+id/TagFragment"
-        android:name="com.example.expensetracker2020.TagFragment"
+        android:name="com.example.expensetracker2020.Fragments.TagFragment"
         android:label="@string/top_tag_label"
         tools:layout="@layout/fragment_tag" />
     <fragment
         android:id="@+id/StatisticsFragment"
-        android:name="com.example.expensetracker2020.StatisticsFragment"
+        android:name="com.example.expensetracker2020.Fragments.StatisticsFragment"
         android:label="@string/top_statistics_label"
         tools:layout="@layout/fragment_statistics" />
 </navigation>

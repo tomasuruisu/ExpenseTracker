@@ -1,9 +1,8 @@
-package com.example.expensetracker2020;
+package com.example.expensetracker2020.Fragments;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.text.InputFilter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,50 +21,48 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.expensetracker2020.Database.Entities.Account;
 import com.example.expensetracker2020.Database.Entities.Interval;
 import com.example.expensetracker2020.Database.Entities.Tag;
 import com.example.expensetracker2020.Database.Entities.Transaction;
-import com.example.expensetracker2020.Database.ViewModels.AccountViewModel;
 import com.example.expensetracker2020.Database.ViewModels.IntervalViewModel;
 import com.example.expensetracker2020.Database.ViewModels.TagViewModel;
 import com.example.expensetracker2020.Database.ViewModels.TransactionViewModel;
 import com.example.expensetracker2020.HelperClasses.DecimalDigitsInputFilter;
+import com.example.expensetracker2020.R;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 public class TransactionFragment extends Fragment {
-    final Calendar transactionDateCalendar = Calendar.getInstance();
-    final int TRANSACTION_DAILY = 1;
-    final int TRANSACTION_WEEKLY = 7;
-    final int TRANSACTION_MONTHLY = 30;
-    final int TRANSACTION_DAILY_AMOUNT = 30;
-    final int TRANSACTION_WEEKLY_AMOUNT = 51;
-    final int TRANSACTION_MONTHLY_AMOUNT = 11;
-    TagViewModel tagViewModel;
-    IntervalViewModel intervalViewModel;
-    TransactionViewModel transactionViewModel;
-    DatePickerDialog.OnDateSetListener date;
-    EditText editAmount;
-    EditText editTitle;
-    EditText editDate;
-    EditText editTag;
-    EditText editInterval;
-    RadioGroup editType;
-    String dateFormat = "dd/MM/yyyy";
-    List<Tag> tagList;
-    Spinner tagSpinner;
-    List<Interval> intervalList;
-    Spinner intervalSpinner;
-    double amount;
-    Tag tag;
-    Interval interval;
-    String type = "Deposit";
+    private final Calendar transactionDateCalendar = Calendar.getInstance();
+    private final int TRANSACTION_DAILY = 1;
+    private final int TRANSACTION_WEEKLY = 7;
+    private final int TRANSACTION_MONTHLY = 30;
+    private final int TRANSACTION_DAILY_AMOUNT = 30;
+    private final int TRANSACTION_WEEKLY_AMOUNT = 51;
+    private final int TRANSACTION_MONTHLY_AMOUNT = 11;
+    private TagViewModel tagViewModel;
+    private IntervalViewModel intervalViewModel;
+    private TransactionViewModel transactionViewModel;
+    private DatePickerDialog.OnDateSetListener date;
+    private EditText editAmount;
+    private EditText editTitle;
+    private EditText editDate;
+    private EditText editTag;
+    private EditText editInterval;
+    private RadioGroup editType;
+    private String dateFormat = "dd/MM/yyyy";
+    private List<Tag> tagList;
+    private Spinner tagSpinner;
+    private List<Interval> intervalList;
+    private Spinner intervalSpinner;
+    private double amount;
+    private Tag tag;
+    private Interval interval;
+    private String type = "Deposit";
 
     @Override
     public View onCreateView(
@@ -221,7 +218,7 @@ public class TransactionFragment extends Fragment {
                 if (tag != null) {
                     Transaction transaction = new Transaction(editTitle.getText().toString(), Double.parseDouble(editAmount.getText().toString()), stringToDate(), type, tag.getId());
                     if (validateTransaction(transaction)) {
-                        addTransaction(transaction);
+                            addTransaction(transaction);
                     } else {
                         showError(view);
                         return;

@@ -4,6 +4,7 @@ import android.app.Application;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
+import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import com.example.expensetracker2020.Database.AppDatabase;
 import com.example.expensetracker2020.Database.DAOs.AccountDao;
@@ -14,12 +15,14 @@ import com.example.expensetracker2020.Database.Entities.Tag;
 import com.example.expensetracker2020.Database.Entities.Transaction;
 import com.example.expensetracker2020.Database.Entities.TransactionAndTag;
 
+import java.util.Date;
 import java.util.List;
 
 public class TransactionRepository {
 
     private TransactionDao transactionDao;
     private LiveData<List<TransactionAndTag>> transactions;
+    private LiveData<List<TransactionAndTag>> transactionsFromCurrentMonth;
 
     public TransactionRepository(Application application) {
         AppDatabase database = AppDatabase.getDatabase(application);
@@ -29,6 +32,10 @@ public class TransactionRepository {
 
     public LiveData<List<TransactionAndTag>> getAll() {
         return transactions;
+    }
+
+    public LiveData<List<TransactionAndTag>> getTransactionsFromCurrentMonth(Date start, Date end) {
+        return transactionDao.getTransactionsFromCurrentMonth(start, end);
     }
 
     public void insert(Transaction transaction) {

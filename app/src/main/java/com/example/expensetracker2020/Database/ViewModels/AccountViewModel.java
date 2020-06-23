@@ -34,4 +34,8 @@ public class AccountViewModel extends AndroidViewModel {
     public void insert(Account account) {
         accountRepository.insert(account);
     }
+
+    public void update(Account account) {
+        accountRepository.update(account);
+    }
 }

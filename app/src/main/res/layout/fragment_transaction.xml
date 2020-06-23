@@ -5,7 +5,7 @@
     android:id="@+id/second_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TransactionFragment">
+    tools:context=".Fragments.TransactionFragment">
 
     <LinearLayout
         android:layout_width="175dp"

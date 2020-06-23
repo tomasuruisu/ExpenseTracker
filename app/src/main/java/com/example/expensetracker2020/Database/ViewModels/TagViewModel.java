@@ -32,4 +32,12 @@ public class TagViewModel extends AndroidViewModel {
     public void insert(Tag tag) {
         tagRepository.insert(tag);
     }
+
+    public void update(Tag tag) {
+        tagRepository.update(tag);
+    }
+
+    public void delete(Tag tag) {
+        tagRepository.delete(tag);
+    }
 }

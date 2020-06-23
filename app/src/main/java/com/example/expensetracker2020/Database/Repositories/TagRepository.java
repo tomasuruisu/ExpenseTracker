@@ -34,6 +34,14 @@ public class TagRepository {
         new TagRepository.InsertTagAsyncTask(tagDao).execute(tag);
     }
 
+    public void update(Tag tag) {
+        new TagRepository.UpdateTagAsyncTask(tagDao).execute(tag);
+    }
+
+    public void delete(Tag tag) {
+        new TagRepository.DeleteTagAsyncTask(tagDao).execute(tag);
+    }
+
     private static class InsertTagAsyncTask extends AsyncTask<Tag, Void, Void> {
         private TagDao tagDao;
 
@@ -43,6 +51,32 @@ public class TagRepository {
         @Override
         protected Void doInBackground(Tag... tags) {
             tagDao.insert(tags[0]);
+            return null;
+        }
+    }
+
+    private static class UpdateTagAsyncTask extends AsyncTask<Tag, Void, Void> {
+        private TagDao tagDao;
+
+        private UpdateTagAsyncTask(TagDao tagDao) {
+            this.tagDao = tagDao;
+        }
+        @Override
+        protected Void doInBackground(Tag... tags) {
+            tagDao.update(tags[0]);
+            return null;
+        }
+    }
+
+    private static class DeleteTagAsyncTask extends AsyncTask<Tag, Void, Void> {
+        private TagDao tagDao;
+
+        private DeleteTagAsyncTask(TagDao tagDao) {
+            this.tagDao = tagDao;
+        }
+        @Override
+        protected Void doInBackground(Tag... tags) {
+            tagDao.delete(tags[0]);
             return null;
         }
     }
