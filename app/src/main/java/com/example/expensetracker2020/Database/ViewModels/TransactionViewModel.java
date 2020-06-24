@@ -5,8 +5,6 @@ import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.example.expensetracker2020.Database.Entities.Account;
-import com.example.expensetracker2020.Database.Entities.Tag;
 import com.example.expensetracker2020.Database.Entities.Transaction;
 import com.example.expensetracker2020.Database.Entities.TransactionAndTag;
 import com.example.expensetracker2020.Database.Repositories.TransactionRepository;
@@ -18,7 +16,6 @@ public class TransactionViewModel extends AndroidViewModel {
 
     private TransactionRepository transactionRepository;
     private LiveData<List<TransactionAndTag>> transactions;
-    private LiveData<List<TransactionAndTag>> transactionsFromCurrentMonth;
 
     public TransactionViewModel(Application application) {
         super(application);
@@ -26,14 +23,19 @@ public class TransactionViewModel extends AndroidViewModel {
         transactions = transactionRepository.getAll();
     }
 
-    public LiveData<List<TransactionAndTag>> getTransactions() {
-        return transactions;
-    };
     public LiveData<List<TransactionAndTag>> getTransactionsFromCurrentMonth(Date start, Date end) {
         return transactionRepository.getTransactionsFromCurrentMonth(start, end);
     };
 
+    public LiveData<List<TransactionAndTag>> getUnaccountedForTransactions() {
+        return transactionRepository.getUnaccountedForTransactions();
+    };
+
     public void insert(Transaction transaction) {
         transactionRepository.insert(transaction);
+    }
+
+    public void update(Transaction transaction) {
+        transactionRepository.update(transaction);
     }
 }

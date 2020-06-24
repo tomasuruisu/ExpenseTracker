@@ -10,42 +10,30 @@
         android:id="@+id/calculatedBalance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="140dp"
+        android:layout_marginBottom="92dp"
         android:text="@string/calc_balance"
         android:textColor="#000000"
         android:textSize="40sp"
         android:typeface="normal"
+        android:gravity="center"
         app:layout_constraintBottom_toTopOf="@+id/button_first"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.848"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/current_balance"
+        android:id="@+id/to_spend_or_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/current_balance"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/balance"
+        android:gravity="center"
+        android:text="@string/to_spend"
+        android:textSize="26sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.844"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <TextView
-        android:id="@+id/balance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="324dp"
-        android:text="@string/balance"
-        android:textColor="#000000"
-        android:textSize="40sp"
-        android:typeface="normal"
-        app:layout_constraintBottom_toTopOf="@+id/button_first"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/calculatedBalance"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/month"
@@ -54,14 +42,44 @@
         android:layout_marginTop="88dp"
         android:drawableStart="@drawable/ic_calendar_black"
         android:drawablePadding="5sp"
+        android:gravity="center"
         android:text="@string/month"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/calculatedBalance"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.823"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/balance"
-        app:layout_constraintVertical_bias="0.064" />
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="88dp"
+        android:gravity="center"
+        android:text="@string/balance"
+        android:textColor="#000000"
+        android:textSize="40sp"
+        android:typeface="normal"
+        app:layout_constraintBottom_toTopOf="@+id/button_first"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.239"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/current_balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/current_balance"
+        android:textSize="30sp"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/balance"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.187"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.983" />
 
     <Button
         android:id="@+id/button_first"
@@ -76,18 +94,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.847" />
-
-    <TextView
-        android:id="@+id/to_spend_or_save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/to_spend"
-        android:textSize="26sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calculatedBalance"
-        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

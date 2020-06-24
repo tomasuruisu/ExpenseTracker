@@ -5,6 +5,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.example.expensetracker2020.Database.Entities.Transaction;
 import com.example.expensetracker2020.Database.Entities.TransactionAndTag;
@@ -19,19 +20,20 @@ public interface TransactionDao {
     LiveData<List<TransactionAndTag>> getAll();
 
     @androidx.room.Transaction
-    @Query("SELECT * FROM `transaction` WHERE date BETWEEN (:start) AND (:end)")
+    @Query("SELECT * FROM `transaction` WHERE DATE(date) BETWEEN DATE((:start)) AND DATE((:end))")
     LiveData<List<TransactionAndTag>> getTransactionsFromCurrentMonth(Date start, Date end);
 
     @androidx.room.Transaction
-    @Query("SELECT * FROM `transaction` WHERE id IN (:ids)")
-    LiveData<List<TransactionAndTag>> loadAllByIds(int[] ids);
+    @Query("SELECT * FROM `transaction` WHERE is_accounted_for != 1")
+    LiveData<List<TransactionAndTag>> getUnaccountedForTransactions();
 
     @androidx.room.Transaction
     @Insert
     void insert(Transaction transaction);
 
-    @Insert
-    void insertAll(Transaction... transactions);
+    @androidx.room.Transaction
+    @Update
+    void update(Transaction transaction);
 
     @Delete
     void delete(Transaction transaction);

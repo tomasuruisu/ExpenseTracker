@@ -19,7 +19,7 @@ import com.example.expensetracker2020.Database.Entities.Interval;
 import com.example.expensetracker2020.Database.Entities.Tag;
 import com.example.expensetracker2020.Database.Entities.Transaction;
 
-@Database(entities = {Transaction.class, Tag.class, Interval.class, Account.class}, version = 4)
+@Database(entities = {Transaction.class, Tag.class, Interval.class, Account.class}, version = 1)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
     public abstract TransactionDao transactionDao();
@@ -30,7 +30,6 @@ public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase instance;
 
     public static synchronized AppDatabase getDatabase(final Context context) {
-        // context.deleteDatabase("app_database");
         if (instance == null) {
                     instance = Room.databaseBuilder(context.getApplicationContext(),
                             AppDatabase.class, "app_database")
@@ -61,7 +60,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            accountDao.insert(new Account(0.0));
+            accountDao.insert(new Account(0.0, 0));
             tagDao.insert(new Tag("Groceries"));
             tagDao.insert(new Tag("Work"));
             tagDao.insert(new Tag("Miscellaneous"));

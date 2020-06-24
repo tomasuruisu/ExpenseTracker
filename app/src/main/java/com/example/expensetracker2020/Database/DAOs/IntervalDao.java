@@ -16,14 +16,8 @@ public interface IntervalDao {
     @Query("SELECT * FROM interval")
     LiveData<List<Interval>> getAll();
 
-    @Query("SELECT * FROM interval WHERE id IN (:ids)")
-    LiveData<List<Interval>> loadAllByIds(int[] ids);
-
     @Insert
     void insert(Interval interval);
-
-    @Insert
-    void insertAll(Interval... intervals);
 
     @Delete
     void delete(Interval interval);

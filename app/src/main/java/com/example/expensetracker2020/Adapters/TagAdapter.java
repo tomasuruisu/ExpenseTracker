@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TagAdapter extends RecyclerView.Adapter<TagAdapter.TagHolder> {
-    private List<Tag> tags = new ArrayList<>();
+    private List<Tag> tags = new ArrayList<>(); // needs to be initialized, otherwise we might get a nullpointer exception
     private OnItemClickListener listener;
 
     @NonNull

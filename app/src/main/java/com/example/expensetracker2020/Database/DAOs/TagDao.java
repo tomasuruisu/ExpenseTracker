@@ -22,9 +22,6 @@ public interface TagDao {
     @Insert
     void insert(Tag tag);
 
-    @Insert
-    void insertAll(Tag... tags);
-
     @Update
     void update(Tag tag);
 

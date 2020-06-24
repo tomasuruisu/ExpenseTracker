@@ -22,7 +22,6 @@ public class TransactionRepository {
 
     private TransactionDao transactionDao;
     private LiveData<List<TransactionAndTag>> transactions;
-    private LiveData<List<TransactionAndTag>> transactionsFromCurrentMonth;
 
     public TransactionRepository(Application application) {
         AppDatabase database = AppDatabase.getDatabase(application);
@@ -38,8 +37,16 @@ public class TransactionRepository {
         return transactionDao.getTransactionsFromCurrentMonth(start, end);
     }
 
+    public LiveData<List<TransactionAndTag>> getUnaccountedForTransactions() {
+        return transactionDao.getUnaccountedForTransactions();
+    }
+
     public void insert(Transaction transaction) {
         new TransactionRepository.InsertTransactionAsyncTask(transactionDao).execute(transaction);
+    }
+
+    public void update(Transaction transaction) {
+        new TransactionRepository.UpdateTransactionAsyncTask(transactionDao).execute(transaction);
     }
 
     private static class InsertTransactionAsyncTask extends AsyncTask<Transaction, Void, Void> {
@@ -51,6 +58,19 @@ public class TransactionRepository {
         @Override
         protected Void doInBackground(Transaction... transactions) {
             transactionDao.insert(transactions[0]);
+            return null;
+        }
+    }
+
+    private static class UpdateTransactionAsyncTask extends AsyncTask<Transaction, Void, Void> {
+        private TransactionDao transactionDao;
+
+        private UpdateTransactionAsyncTask(TransactionDao transactionDao) {
+            this.transactionDao = transactionDao;
+        }
+        @Override
+        protected Void doInBackground(Transaction... transactions) {
+            transactionDao.update(transactions[0]);
             return null;
         }
     }

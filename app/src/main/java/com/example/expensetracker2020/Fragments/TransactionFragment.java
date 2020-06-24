@@ -44,6 +44,7 @@ public class TransactionFragment extends Fragment {
     private final int TRANSACTION_DAILY_AMOUNT = 30;
     private final int TRANSACTION_WEEKLY_AMOUNT = 51;
     private final int TRANSACTION_MONTHLY_AMOUNT = 11;
+    private final int IS_ACCOUNTED_FOR_STANDARD_VALUE = 0;
     private TagViewModel tagViewModel;
     private IntervalViewModel intervalViewModel;
     private TransactionViewModel transactionViewModel;
@@ -59,10 +60,11 @@ public class TransactionFragment extends Fragment {
     private Spinner tagSpinner;
     private List<Interval> intervalList;
     private Spinner intervalSpinner;
-    private double amount;
     private Tag tag;
     private Interval interval;
     private String type = "Deposit";
+    private final int DECIMAL_FILTER_DIGITS_BEFORE_ZERO = 20;
+    private final int DECIMAL_FILTER_DIGITS_AFTER_ZERO = 2;
 
     @Override
     public View onCreateView(
@@ -84,12 +86,22 @@ public class TransactionFragment extends Fragment {
         tagSpinner = view.findViewById(R.id.tag_spinner);
         intervalSpinner = view.findViewById(R.id.interval_spinner);
         editType = view.findViewById(R.id.edit_type);
-
         editType.check(R.id.is_deposit);
-        editAmount.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(5,2)});
+
+        editAmount.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(DECIMAL_FILTER_DIGITS_BEFORE_ZERO, DECIMAL_FILTER_DIGITS_AFTER_ZERO)});
+
         transactionViewModel = new ViewModelProvider(this).get(TransactionViewModel.class);
+        tagViewModel = new ViewModelProvider(this).get(TagViewModel.class);
+        intervalViewModel = new ViewModelProvider(this).get(IntervalViewModel.class);
+
         // initialize date to today
         dateToString();
+        // get tags and add them to the tag spinner
+        getTags();
+        // get intervals and add them to the interval spinner
+        getIntervals();
+
+        // SET ALL LISTENERS
 
         // Let the user choose a date with a date picker
         date = new DatePickerDialog.OnDateSetListener() {
@@ -113,24 +125,6 @@ public class TransactionFragment extends Fragment {
             }
         });
 
-        // get tags and add them to the tag spinner
-        tagViewModel = new ViewModelProvider(this).get(TagViewModel.class);
-        tagViewModel.getTags().observe(getViewLifecycleOwner(), new Observer<List<Tag>>() {
-            @Override
-            public void onChanged(@Nullable final List<Tag> tags) {
-                tagList = tags;
-                String[] tagArray = new String[tags.size()];
-                for (Tag tag : tags
-                ) {
-                    tagArray[tag.getId() - 1] = tag.getName();
-                }
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(view.getContext(),
-                        android.R.layout.simple_spinner_item, tagArray);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                tagSpinner.setAdapter(adapter);
-            }
-        });
-
         // open tag spinner when edit tag is selected
         editTag.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,27 +143,8 @@ public class TransactionFragment extends Fragment {
                 editTag.setText(selectedTag);
                 tag = tagList.get(i);
             }
-
             public void onNothingSelected(AdapterView<?> adapterView) {
                 return;
-            }
-        });
-
-        // get intervals and add them to the interval spinner
-        intervalViewModel = new ViewModelProvider(this).get(IntervalViewModel.class);
-        intervalViewModel.getIntervals().observe(getViewLifecycleOwner(), new Observer<List<Interval>>() {
-            @Override
-            public void onChanged(@Nullable final List<Interval> intervals) {
-                intervalList = intervals;
-                String[] intervalArray = new String[intervals.size()];
-                for (Interval interval : intervals
-                ) {
-                    intervalArray[interval.getId() - 1] = interval.getName();
-                }
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(view.getContext(),
-                        android.R.layout.simple_spinner_item, intervalArray);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                intervalSpinner.setAdapter(adapter);
             }
         });
 
@@ -191,12 +166,12 @@ public class TransactionFragment extends Fragment {
                 editInterval.setText(selectedInterval);
                 interval = intervalList.get(i);
             }
-
             public void onNothingSelected(AdapterView<?> adapterView) {
                 return;
             }
         });
 
+        // listen for radiobutton changes
         editType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -216,7 +191,7 @@ public class TransactionFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (tag != null) {
-                    Transaction transaction = new Transaction(editTitle.getText().toString(), Double.parseDouble(editAmount.getText().toString()), stringToDate(), type, tag.getId());
+                    Transaction transaction = new Transaction(editTitle.getText().toString(), Double.parseDouble(editAmount.getText().toString()), stringToDate(), type, tag.getId(), IS_ACCOUNTED_FOR_STANDARD_VALUE);
                     if (validateTransaction(transaction)) {
                             addTransaction(transaction);
                     } else {
@@ -231,11 +206,18 @@ public class TransactionFragment extends Fragment {
         });
     }
 
+    /**
+     * Convert a Date instance to text
+     */
     private void dateToString() {
         SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.ENGLISH);
         editDate.setText(sdf.format(transactionDateCalendar.getTime()));
     }
 
+    /**
+     * Convert a String to a Date
+     * @return Date corresponding to the given String
+     */
     @Nullable
     private Date stringToDate() {
         try {
@@ -248,14 +230,69 @@ public class TransactionFragment extends Fragment {
         }
     }
 
+    /**
+     * Get all tags and add them to the pop-up list
+     */
+    private void getTags() {
+        tagViewModel.getTags().observe(getViewLifecycleOwner(), new Observer<List<Tag>>() {
+            @Override
+            public void onChanged(@Nullable final List<Tag> tags) {
+                tagList = tags;
+                String[] tagArray = new String[tags.size()];
+                for (Tag tag : tags
+                ) {
+                    tagArray[tag.getId() - 1] = tag.getName();
+                }
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
+                        android.R.layout.simple_spinner_item, tagArray);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                tagSpinner.setAdapter(adapter);
+            }
+        });
+    }
+
+    /**
+     * Get all intervals and add then to the pop-up list
+     */
+    private void getIntervals() {
+        intervalViewModel.getIntervals().observe(getViewLifecycleOwner(), new Observer<List<Interval>>() {
+            @Override
+            public void onChanged(@Nullable final List<Interval> intervals) {
+                intervalList = intervals;
+                String[] intervalArray = new String[intervals.size()];
+                for (Interval interval : intervals
+                ) {
+                    intervalArray[interval.getId() - 1] = interval.getName();
+                }
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
+                        android.R.layout.simple_spinner_item, intervalArray);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                intervalSpinner.setAdapter(adapter);
+            }
+        });
+    }
+
+    /**
+     *
+     * @param transaction is the transaction to be saved
+     * @return true if transaction is correct
+     */
     private boolean validateTransaction(Transaction transaction) {
         return !transaction.getTitle().isEmpty() && transaction.getAmount() != 0.0 && transaction.getDate() != null && (transaction.getType() == "Deposit" || transaction.getType() == "Withdrawal") && transaction.getTagId() >= 0;
     }
 
+    /**
+     * shows a Toast error if one of the fields is incorrect and the user tries to save the transaction
+     */
     private void showError(View view) {
-        Toast.makeText(view.getContext(), "One of the fields contains a wrong value, please update the transaction", Toast.LENGTH_SHORT).show();
+        Toast.makeText(view.getContext(), getContext().getResources().getString(R.string.transaction_fields_error), Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Insert the transaction into the database.
+     * If an interval is selected, then add the transaction according to the chosen interval
+     * @param transaction is the transaction to be saved
+     */
     private void addTransaction(Transaction transaction) {
         Transaction newTransaction;
         transactionViewModel.insert(transaction);
@@ -263,25 +300,27 @@ public class TransactionFragment extends Fragment {
             case TRANSACTION_DAILY:
                 for (int i = 0; i < TRANSACTION_DAILY_AMOUNT; i++) {
                     transactionDateCalendar.add(Calendar.DAY_OF_YEAR, 1);
-                    newTransaction = new Transaction(transaction.getTitle(), transaction.getAmount(), transactionDateCalendar.getTime(), transaction.getType(), transaction.getTagId());
+                    newTransaction = new Transaction(transaction.getTitle(), transaction.getAmount(), transactionDateCalendar.getTime(), transaction.getType(), transaction.getTagId(), IS_ACCOUNTED_FOR_STANDARD_VALUE);
                     transactionViewModel.insert(newTransaction);
             }
                 break;
             case TRANSACTION_WEEKLY:
                 for (int i = 0; i < TRANSACTION_WEEKLY_AMOUNT; i++) {
                     transactionDateCalendar.add(Calendar.WEEK_OF_YEAR, 1);
-                    newTransaction = new Transaction(transaction.getTitle(), transaction.getAmount(), transactionDateCalendar.getTime(), transaction.getType(), transaction.getTagId());
+                    newTransaction = new Transaction(transaction.getTitle(), transaction.getAmount(), transactionDateCalendar.getTime(), transaction.getType(), transaction.getTagId(), IS_ACCOUNTED_FOR_STANDARD_VALUE);
                     transactionViewModel.insert(newTransaction);
                 }
                 break;
             case TRANSACTION_MONTHLY:
                 for (int i = 0; i < TRANSACTION_MONTHLY_AMOUNT; i++) {
                     transactionDateCalendar.add(Calendar.MONTH, 1);
-                    newTransaction = new Transaction(transaction.getTitle(), transaction.getAmount(), transactionDateCalendar.getTime(), transaction.getType(), transaction.getTagId());
+                    newTransaction = new Transaction(transaction.getTitle(), transaction.getAmount(), transactionDateCalendar.getTime(), transaction.getType(), transaction.getTagId(), IS_ACCOUNTED_FOR_STANDARD_VALUE);
                     transactionViewModel.insert(newTransaction);
                 }
                 break;
         }
+
+        // Let the user know that inserting the transaction(s) has been a success
         Bundle bundle = new Bundle();
         bundle.putBoolean("transaction_success", true);
         NavHostFragment.findNavController(TransactionFragment.this)

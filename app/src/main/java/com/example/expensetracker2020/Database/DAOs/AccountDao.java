@@ -19,17 +19,11 @@ public interface AccountDao {
     @Query("SELECT * FROM account LIMIT 1")
     LiveData<Account> getAccount();
 
-    @Query("SELECT * FROM account WHERE id IN (:ids)")
-    LiveData<List<Account>> loadAllByIds(int[] ids);
-
     @Insert
     void insert(Account account);
 
     @Update
     void update(Account account);
-
-    @Insert
-    void insertAll(Account... accounts);
 
     @Delete
     void delete(Account account);

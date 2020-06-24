@@ -11,8 +11,11 @@ public class Account {
 
     private double balance;
 
-    public Account(double balance) {
+    private int initialized;
+
+    public Account(double balance, int initialized) {
         this.balance = balance;
+        this.initialized = initialized;
     }
 
     public void setId(int id) {
@@ -29,5 +32,13 @@ public class Account {
 
     public void setBalance(double balance) {
         this.balance = balance;
+    }
+
+    public int getInitialized() {
+        return initialized;
+    }
+
+    public void setInitialized(int initialized) {
+        this.initialized = initialized;
     }
 }

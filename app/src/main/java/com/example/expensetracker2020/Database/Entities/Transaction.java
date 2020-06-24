@@ -22,12 +22,16 @@ public class Transaction {
     @ColumnInfo( name = "tag_id")
     public int tagId;
 
-    public Transaction(String title, double amount, Date date, String type, int tagId) {
+    @ColumnInfo( name = "is_accounted_for")
+    private int isAccountedFor;
+
+    public Transaction(String title, double amount, Date date, String type, int tagId, int isAccountedFor) {
         this.title = title;
         this.amount = amount;
         this.date = date;
         this.type = type;
         this.tagId = tagId;
+        this.isAccountedFor = isAccountedFor;
     }
 
     public int getId() {
@@ -60,5 +64,13 @@ public class Transaction {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getIsAccountedFor() {
+        return isAccountedFor;
+    }
+
+    public void setIsAccountedFor(int isAccountedFor) {
+        this.isAccountedFor = isAccountedFor;
     }
 }

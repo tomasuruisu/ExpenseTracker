@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.InputFilter;
 import android.text.InputType;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,7 @@ public class TagFragment extends Fragment {
     private EditText newTag;
     private ImageButton addNewTag;
     private Tag currentTag;
+    private int toDeleteTagTopPadding = 50;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,9 +65,11 @@ public class TagFragment extends Fragment {
         tagListView.setLayoutManager(new LinearLayoutManager(getContext()));
         tagListView.setHasFixedSize(true);
 
+        // set adapter for the recyclerview containing the list of tags
         final TagAdapter tagListAdapter = new TagAdapter();
         tagListView.setAdapter(tagListAdapter);
 
+        // start process of adding the new tag when button is pressed
         addNewTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,6 +77,7 @@ public class TagFragment extends Fragment {
             }
         });
 
+        // get tags and add them to the adapter and then to the recyclerview
         tagViewModel.getTags().observe(getViewLifecycleOwner(), new Observer<List<Tag>>() {
             @Override
             public void onChanged(List<Tag> tags) {
@@ -95,6 +100,10 @@ public class TagFragment extends Fragment {
         });
     }
 
+    /**
+     * get the filled in text and insert the new tag into the database
+     * if the text is empty, don't do anything and instead show an error message to the user
+     */
     private void addTag() {
         String tagName = newTag.getText().toString();
         if (!tagName.isEmpty()) {
@@ -105,12 +114,19 @@ public class TagFragment extends Fragment {
         }
     }
 
+    /**
+     * set up a pop-up window where the user can edit the selected tag
+     */
     private void editTag() {
+        // create an EditText for the user to edit the tag name
         final EditText editTag = new EditText(getContext());
         editTag.setText(currentTag.getName());
-        alert.setMessage("Edit tag");
+        alert.setMessage(getContext().getResources().getString(R.string.edit_tag));
         alert.setView(editTag);
-        alert.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+
+        // when the update button is pressed, check if the EditText is empty and if it isn't
+        // update the tag name in the database
+        alert.setPositiveButton(getContext().getResources().getString(R.string.prompt_update), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 if (!editTag.getText().toString().isEmpty()) {
                     currentTag.setName(editTag.getText().toString());
@@ -120,25 +136,33 @@ public class TagFragment extends Fragment {
                 }
             }
         });
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        alert.setNegativeButton(getContext().getResources().getString(R.string.prompt_cancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
+                // don't do anything except close the pop-up
             }
         });
+        // The alert pop-up is now fully built, so show it to the user
         alert.show();
     }
 
+    /**
+     * Show a pop-up asking the user to confirm the deletion of the tag
+     */
     private void deleteTag() {
         final TextView deleteTag = new TextView(getContext());
-        alert.setMessage("Are you sure you want to delete this tag?");
+        alert.setMessage(getContext().getResources().getString(R.string.tag_delete_confirm));
         deleteTag.setText(currentTag.getName());
+        deleteTag.setGravity(Gravity.CENTER);
+        deleteTag.setPadding(0, toDeleteTagTopPadding, 0, 0);
         alert.setView(deleteTag);
-        alert.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+        alert.setPositiveButton(getContext().getResources().getString(R.string.prompt_delete), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 tagViewModel.delete(currentTag);
             }
         });
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        alert.setNegativeButton(getContext().getResources().getString(R.string.prompt_cancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
+                // do nothing
             }
         });
         alert.show();

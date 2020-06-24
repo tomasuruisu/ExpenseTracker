@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "c6c41a3f7e5a690c811018ea2a8a9c05",
+    "identityHash": "7e0a9c3319737ecf494bfbca046f785d",
     "entities": [
       {
         "tableName": "transaction",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT, `date` INTEGER, `type` TEXT, `tag_id` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT, `amount` REAL NOT NULL, `date` INTEGER, `type` TEXT, `tag_id` INTEGER NOT NULL, `is_accounted_for` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -19,6 +19,12 @@
             "columnName": "title",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "amount",
+            "columnName": "amount",
+            "affinity": "REAL",
+            "notNull": true
           },
           {
             "fieldPath": "date",
@@ -35,6 +41,12 @@
           {
             "fieldPath": "tagId",
             "columnName": "tag_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isAccountedFor",
+            "columnName": "is_accounted_for",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -108,7 +120,7 @@
       },
       {
         "tableName": "account",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `balance` REAL NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `balance` REAL NOT NULL, `initialized` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -120,6 +132,12 @@
             "fieldPath": "balance",
             "columnName": "balance",
             "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "initialized",
+            "columnName": "initialized",
+            "affinity": "INTEGER",
             "notNull": true
           }
         ],
@@ -136,7 +154,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c6c41a3f7e5a690c811018ea2a8a9c05')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7e0a9c3319737ecf494bfbca046f785d')"
     ]
   }
 }
