@@ -20,7 +20,7 @@ public interface TransactionDao {
     LiveData<List<TransactionAndTag>> getAll();
 
     @androidx.room.Transaction
-    @Query("SELECT * FROM `transaction` WHERE DATE(date) BETWEEN DATE((:start)) AND DATE((:end))")
+    @Query("SELECT * FROM `transaction` WHERE date BETWEEN (:start) AND (:end)")
     LiveData<List<TransactionAndTag>> getTransactionsFromCurrentMonth(Date start, Date end);
 
     @androidx.room.Transaction

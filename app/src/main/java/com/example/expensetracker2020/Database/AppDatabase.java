@@ -30,6 +30,7 @@ public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase instance;
 
     public static synchronized AppDatabase getDatabase(final Context context) {
+        //context.deleteDatabase("app_database");
         if (instance == null) {
                     instance = Room.databaseBuilder(context.getApplicationContext(),
                             AppDatabase.class, "app_database")

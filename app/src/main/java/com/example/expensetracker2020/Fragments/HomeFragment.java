@@ -194,7 +194,6 @@ public class HomeFragment extends Fragment {
         startMonth = calendar.getTime();
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DATE));
         endMonth = calendar.getTime();
-        calendar.setTime(currentDate);
 
         transactionViewModel.getTransactionsFromCurrentMonth(startMonth, endMonth).observe(getViewLifecycleOwner(), new Observer<List<TransactionAndTag>>() {
             @Override
@@ -236,6 +235,7 @@ public class HomeFragment extends Fragment {
      * know that they are now accounted for.
      */
     private void getUnaccountedForTransactions() {
+        calendar.setTime(currentDate);
         transactionViewModel.getUnaccountedForTransactions().observe(getViewLifecycleOwner(), new Observer<List<TransactionAndTag>>() {
             @Override
             public void onChanged(@Nullable final List<TransactionAndTag> transactionsAndTags) {
